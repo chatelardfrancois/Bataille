@@ -15,6 +15,8 @@ public class Main {
         JeuCarte.afficher(deck2);
 
         Bataille.bataille(deck1,deck2);
+
+        //TODO créer la classe Joueurs pour associer les decks à des joueurs
     }
 }
 
