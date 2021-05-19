@@ -27,6 +27,7 @@ public class Bataille {
 
         do {
             //Verifie si aucun des deux decks n'est vide, si l'un ou l'autre est vide fin de la bataille avec méhtode checkDeckVide()
+            //TODO remplacer checkDeckVide par une erreur
             jeu1Vide = checkDeckVide(j1.getDeck());
 
             jeu2Vide = checkDeckVide(j2.getDeck());

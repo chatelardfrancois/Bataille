@@ -8,11 +8,9 @@ public class JeuCarte {
      */
     public static Carte[] getTabDeCarte() {
         Carte[] tabDeCarte = new Carte[52];
-        Couleur[] tabDesCouleurs = Couleur.values();
-        Valeur[] tabDesValeurs = Valeur.values();
         int i = 0;
-        for (Couleur tabDesCouleur : tabDesCouleurs) {
-            for (Valeur tabDesValeur : tabDesValeurs) {
+        for (Couleur tabDesCouleur : Couleur.values()) {
+            for (Valeur tabDesValeur : Valeur.values()) {
                 tabDeCarte[i] = new Carte(tabDesCouleur, tabDesValeur);
                 i++;
             }
