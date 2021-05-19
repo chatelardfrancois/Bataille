@@ -1,17 +1,31 @@
 import java.util.Random;
 
 public class Bataille {
-    public static void bataille(Carte[] jeu1, Carte[] jeu2){
+
+    public static void bataille(Joueur j1, Joueur j2){
+
         Random random = new Random();
         int carte1;
         int carte2;
         boolean jeu1Vide=false;
         boolean jeu2Vide=false;
         boolean tasPlein=false;
+
+        // Création d'un paquet de carte de 52 cartes
+        Carte[] jeuDeCarte = JeuCarte.getTabDeCarte();
+
+        // Distribution aléatoire de la première moitié du paquet de cartes dans le deck du premier joueur
+        j1.setDeck(JeuCarte.distribuerJeu(jeuDeCarte));
+
+        // Distribution aléatoire de la deuxième moitié du paquet de cartes dans le deck du deuxième joueur
+        j2.setDeck(JeuCarte.distribuerJeu(jeuDeCarte));
+
+        // Création d'un tas qui récupère les cartes lors d'une égalité
         Carte[] tas = new Carte[52];
+
         do {
-            //Verifie si aucun des deux jeux n'est vide, si l'un ou l'autre est vide fin de la bataille+
-            for (Carte value : jeu1) {
+            //Verifie si aucun des deux decks n'est vide, si l'un ou l'autre est vide fin de la bataille
+            for (Carte value : j1.getDeck()) {
                 jeu1Vide = false;
                 if (value != null) {
                     break;
@@ -20,7 +34,7 @@ public class Bataille {
                 }
             }
 
-            for (Carte carte : jeu2) {
+            for (Carte carte : j2.getDeck()) {
                 jeu2Vide = false;
                 if (carte != null) {
                     break;
@@ -33,53 +47,56 @@ public class Bataille {
                 //Piochage des cartes aléatoirement
                 do {
                     carte1 = random.nextInt(52);
-                } while (jeu1[carte1] == null);
+                } while (j1.getCarte(carte1) == null);
                 do {
                     carte2 = random.nextInt(52);
-                } while (jeu2[carte2] == null);
+                } while (j2.getCarte(carte2) == null);
 
                 //Comparaison des cartes piochées et résolution du conflit
-                if (jeu1[carte1].getValeur().ordinal() > jeu2[carte2].getValeur().ordinal()) {
-                    System.out.printf("%s bat %s%n",jeu1[carte1], jeu2[carte2]);
-                    JeuCarte.ajouterCarte(jeu2, carte2, jeu1);
+                if (j1.getCarte(carte1).getValeur().ordinal() > j2.getCarte(carte2).getValeur().ordinal()) {
+                    System.out.printf("%s bat %s%n",j1.getCarte(carte1), j2.getCarte(carte2));
+                    JeuCarte.ajouterCarte(j2.getDeck(), carte2, j1.getDeck());
                     // Si égalité antérieure, résolution
                     if(tasPlein){
                         for(int i =0; i<tas.length; i++){
                             if(tas[i]!=null){
-                                JeuCarte.ajouterCarte(tas, i, jeu1);
+                                JeuCarte.ajouterCarte(tas, i, j1.getDeck());
                             }
                         }
                         tasPlein=false;
                     }
-                } else if (jeu1[carte1].getValeur().ordinal() < jeu2[carte2].getValeur().ordinal()) {
-                    System.out.printf("%s bat %s%n",jeu2[carte2], jeu1[carte1]);
-                    JeuCarte.ajouterCarte(jeu1, carte1, jeu2);
+                } else if (j1.getCarte(carte1).getValeur().ordinal() < j2.getCarte(carte2).getValeur().ordinal()) {
+                    System.out.printf("%s bat %s%n",j2.getCarte(carte2), j1.getCarte(carte1));
+                    JeuCarte.ajouterCarte(j1.getDeck(), carte1, j2.getDeck());
                     // Si égalité antérieure, résolution
                     if(tasPlein){
                         for(int i =0; i<tas.length; i++){
                             if(tas[i]!=null){
-                                JeuCarte.ajouterCarte(tas, i, jeu2);
+                                JeuCarte.ajouterCarte(tas, i, j2.getDeck());
                             }
                         }
                         tasPlein=false;
                     }
                 } else{
-                    System.out.printf("Egalite entre %s et %s%n", jeu1[carte1], jeu2[carte2]);
-                    JeuCarte.ajouterCarte(jeu1,carte1, tas);
-                    JeuCarte.ajouterCarte(jeu2,carte2, tas);
+                    System.out.printf("Egalite entre %s et %s%n", j1.getCarte(carte1), j2.getCarte(carte2));
+                    JeuCarte.ajouterCarte(j1.getDeck(),carte1, tas);
+                    JeuCarte.ajouterCarte(j2.getDeck(),carte2, tas);
                     tasPlein=true;
                 }
 
             } else{
                 System.out.println("Fin de la bataille");
-                if (jeu1Vide){
-                    System.out.println("Le deck 1 a gagné");
+                if(jeu1Vide){
+                    System.out.printf("%s a gagné%n", j2);
+                    JeuCarte.afficher(j2.getDeck());
                 } else {
-                    System.out.println("Le deck 2 a gagné");
+                    System.out.printf("%s a gagné%n", j1);
+                    JeuCarte.afficher(j1.getDeck());
                 }
-            }
+                }
 
         } while (!jeu1Vide&&!jeu2Vide);
+
 
     }
 }

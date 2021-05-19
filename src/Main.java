@@ -1,22 +1,13 @@
 public class Main {
     public static void main(String[] args) {
 
-        Carte[] jeuDeCarte = JeuCarte.getTabDeCarte();
-        JeuCarte.afficher(jeuDeCarte);
+        // Instantiation de deux joueurs
+        Joueur j1 = new Joueur("Chatelard", "François");
+        Joueur j2 = new Joueur("Morane", "Bob");
 
-        System.out.println("Jeu 1 :");
+        // Bataille entre les deux joueurs
+        Bataille.bataille(j1,j2);
 
-        Carte[] deck1 = JeuCarte.distribuerJeu(jeuDeCarte);
-        JeuCarte.afficher(deck1);
-
-        System.out.println("Jeu 2 :");
-
-        Carte[] deck2 = JeuCarte.distribuerJeu(jeuDeCarte);
-        JeuCarte.afficher(deck2);
-
-        Bataille.bataille(deck1,deck2);
-
-        //TODO créer la classe Joueurs pour associer les decks à des joueurs
     }
 }
 
