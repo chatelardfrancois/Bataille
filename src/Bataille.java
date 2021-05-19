@@ -27,9 +27,9 @@ public class Bataille {
 
         do {
             //Verifie si aucun des deux decks n'est vide, si l'un ou l'autre est vide fin de la bataille avec méhtode checkDeckVide()
-            jeu1Vide = checkDeckVide(jeu1Vide, j1.getDeck());
+            jeu1Vide = checkDeckVide(j1.getDeck());
 
-            jeu2Vide = checkDeckVide(jeu2Vide, j2.getDeck());
+            jeu2Vide = checkDeckVide(j2.getDeck());
 
             if(!jeu1Vide&&!jeu2Vide) {
                 //Piochage des cartes aléatoirement
@@ -89,7 +89,8 @@ public class Bataille {
 
     }
 
-    public static boolean checkDeckVide(boolean check,Carte[] Deck){
+    public static boolean checkDeckVide(Carte[] Deck){
+        boolean check=false;
         for (Carte value : Deck) {
             check = false;
             if (value != null) {
