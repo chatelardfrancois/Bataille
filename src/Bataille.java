@@ -2,7 +2,6 @@ import java.util.Random;
 
 public class Bataille {
 
-
     public static void bataille(Joueur j1, Joueur j2){
 
         Random random = new Random();
@@ -11,6 +10,8 @@ public class Bataille {
         boolean jeu1Vide=false;
         boolean jeu2Vide=false;
         boolean tasPlein=false;
+
+        int nbCoups= 0;
 
         // Création d'un paquet de carte de 52 cartes
         Carte[] jeuDeCarte = JeuCarte.getTabDeCarte();
@@ -26,9 +27,9 @@ public class Bataille {
 
         do {
             //Verifie si aucun des deux decks n'est vide, si l'un ou l'autre est vide fin de la bataille avec méhtode checkDeckVide()
-            jeu1Vide = checkDeckVide(j1.getDeck());
+            jeu1Vide = checkDeckVide(jeu1Vide, j1.getDeck());
 
-            jeu2Vide = checkDeckVide(j1.getDeck());
+            jeu2Vide = checkDeckVide(jeu2Vide, j2.getDeck());
 
             if(!jeu1Vide&&!jeu2Vide) {
                 //Piochage des cartes aléatoirement
@@ -71,25 +72,24 @@ public class Bataille {
                     JeuCarte.ajouterCarte(j2.getDeck(),carte2, tas);
                     tasPlein=true;
                 }
+                nbCoups++;
 
             } else{
                 System.out.println("Fin de la bataille");
                 if(jeu1Vide){
-                    System.out.printf("%s a gagné%n", j2);
+                    System.out.printf("%s a gagné en %d coups%n", j2, nbCoups);
                     JeuCarte.afficher(j2.getDeck());
                 } else {
-                    System.out.printf("%s a gagné%n", j1);
+                    System.out.printf("%s a gagné en %d coups %n", j1, nbCoups);
                     JeuCarte.afficher(j1.getDeck());
                 }
                 }
-
         } while (!jeu1Vide&&!jeu2Vide);
 
 
     }
 
-    public static boolean checkDeckVide(Carte[] Deck){
-        boolean check = false;
+    public static boolean checkDeckVide(boolean check,Carte[] Deck){
         for (Carte value : Deck) {
             check = false;
             if (value != null) {
