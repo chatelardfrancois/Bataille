@@ -39,6 +39,7 @@ public class Bataille {
                     carte2 = random.nextInt(52);
                 } while (j2.getCarte(carte2) == null);
 
+                //TODO optimisation
                 //Comparaison des cartes piochées et résolution du conflit
                 if (j1.getCarte(carte1).getValeur().ordinal() > j2.getCarte(carte2).getValeur().ordinal()) {
                     System.out.printf("%s bat %s%n",j1.getCarte(carte1), j2.getCarte(carte2));
