@@ -11,12 +11,12 @@ public class JeuCarte {
         Couleur[] tabDesCouleurs = Couleur.values();
         Valeur[] tabDesValeurs = Valeur.values();
         int i = 0;
-            for (int couleur = 0; couleur<tabDesCouleurs.length; couleur++) {
-                for (int valeur = 0; valeur < tabDesValeurs.length; valeur++) {
-                    tabDeCarte[i]=new Carte(tabDesCouleurs[couleur], tabDesValeurs[valeur]);
-                    i++;
-                }
+        for (Couleur tabDesCouleur : tabDesCouleurs) {
+            for (Valeur tabDesValeur : tabDesValeurs) {
+                tabDeCarte[i] = new Carte(tabDesCouleur, tabDesValeur);
+                i++;
             }
+        }
 
         return tabDeCarte;
     }
@@ -51,15 +51,15 @@ public class JeuCarte {
     /**
      * Ajoute la carte d'un jeu dans un autre jeu
      * @param tabDeCarteCopie > jeu dont la carte est copié
-     * @param carteCopie > carte du jeu copié
+     * @param carteCopiee > carte du jeu copié
      * @param tabDeCarteAjout > jeu qui reçoit la carte
      * @return
      */
-    public static void ajouterCarte(Carte[] tabDeCarteCopie, int carteCopie, Carte[] tabDeCarteAjout){
+    public static void ajouterCarte(Carte[] tabDeCarteCopie, int carteCopiee, Carte[] tabDeCarteAjout){
         for(int i = 0; i<tabDeCarteAjout.length; i++){
             if(tabDeCarteAjout[i]==null){
-                tabDeCarteAjout[i]=tabDeCarteCopie[carteCopie];
-                retirerCarte(tabDeCarteCopie, carteCopie);
+                tabDeCarteAjout[i]=tabDeCarteCopie[carteCopiee];
+                retirerCarte(tabDeCarteCopie, carteCopiee);
                 break;
             }
         }
@@ -69,8 +69,8 @@ public class JeuCarte {
      * Affichage jeu de cartes
      */
     public static void afficher(Carte[] tabDeCarte){
-        for(int i = 0; i<tabDeCarte.length;i++){
-            System.out.println(tabDeCarte[i]);
+        for (Carte carte : tabDeCarte) {
+            System.out.println(carte);
         }
     }
 

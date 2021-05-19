@@ -2,6 +2,7 @@ import java.util.Random;
 
 public class Bataille {
 
+
     public static void bataille(Joueur j1, Joueur j2){
 
         Random random = new Random();
@@ -24,24 +25,10 @@ public class Bataille {
         Carte[] tas = new Carte[52];
 
         do {
-            //Verifie si aucun des deux decks n'est vide, si l'un ou l'autre est vide fin de la bataille
-            for (Carte value : j1.getDeck()) {
-                jeu1Vide = false;
-                if (value != null) {
-                    break;
-                } else {
-                    jeu1Vide = true;
-                }
-            }
+            //Verifie si aucun des deux decks n'est vide, si l'un ou l'autre est vide fin de la bataille avec méhtode checkDeckVide()
+            jeu1Vide = checkDeckVide(j1.getDeck());
 
-            for (Carte carte : j2.getDeck()) {
-                jeu2Vide = false;
-                if (carte != null) {
-                    break;
-                } else {
-                    jeu2Vide = true;
-                }
-            }
+            jeu2Vide = checkDeckVide(j1.getDeck());
 
             if(!jeu1Vide&&!jeu2Vide) {
                 //Piochage des cartes aléatoirement
@@ -98,5 +85,18 @@ public class Bataille {
         } while (!jeu1Vide&&!jeu2Vide);
 
 
+    }
+
+    public static boolean checkDeckVide(Carte[] Deck){
+        boolean check = false;
+        for (Carte value : Deck) {
+            check = false;
+            if (value != null) {
+                break;
+            } else {
+                check = true;
+            }
+        }
+        return check;
     }
 }
