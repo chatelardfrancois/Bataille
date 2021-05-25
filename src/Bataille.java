@@ -1,14 +1,12 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Bataille {
 
     public static void bataille(Joueur j1, Joueur j2){
 
-        Random random = new Random();
-        int carte1;
-        int carte2;
-        boolean jeu1Vide=false;
-        boolean jeu2Vide=false;
+        final int CARTE = 0;
+
         boolean tasPlein=false;
 
         int nbCoups= 0;
@@ -23,83 +21,72 @@ public class Bataille {
         j2.setDeck(JeuCarte.distribuerJeu(jeuDeCarte));
 
         // Création d'un tas qui récupère les cartes lors d'une égalité
-        Carte[] tas = new Carte[52];
+        ArrayList<Carte> tas = new ArrayList<>();
+
+        ArrayList<Carte> defausse = new ArrayList<>();
+
+
 
         do {
-            //Verifie si aucun des deux decks n'est vide, si l'un ou l'autre est vide fin de la bataille avec méhtode checkDeckVide()
-            //TODO remplacer checkDeckVide par une erreur
-            jeu1Vide = checkDeckVide(j1.getDeck());
 
-            jeu2Vide = checkDeckVide(j2.getDeck());
 
-            if(!jeu1Vide&&!jeu2Vide) {
-                //Piochage des cartes aléatoirement
-                do {
-                    carte1 = random.nextInt(52);
-                } while (j1.getCarte(carte1) == null);
-                do {
-                    carte2 = random.nextInt(52);
-                } while (j2.getCarte(carte2) == null);
+            //Vérifie si les decks sont vides
+            if(!j1.getDeck().isEmpty() && !j2.getDeck().isEmpty()){
 
-                //TODO optimisation
-                //Comparaison des cartes piochées et résolution du conflit
-                if (j1.getCarte(carte1).getValeur().ordinal() > j2.getCarte(carte2).getValeur().ordinal()) {
-                    System.out.printf("%s bat %s%n",j1.getCarte(carte1), j2.getCarte(carte2));
-                    JeuCarte.ajouterCarte(j2.getDeck(), carte2, j1.getDeck());
+
+                //Comparaison des premières cartes de chaque liste et résolution de conflit
+
+                //Carte joueur 1 > Carte joueur 2
+                if (j1.getCarte(CARTE).getValeur().ordinal() > j2.getCarte(CARTE).getValeur().ordinal()) {
+                    System.out.printf("%s bat %s%n",j1.getCarte(CARTE), j2.getCarte(CARTE));
+                    JeuCarte.ajouterCarteListe(j1.getDeck(), CARTE, defausse);
+                    JeuCarte.ajouterCarteListe(j2.getDeck(), CARTE, defausse);
+                    JeuCarte.viderTas(defausse, j1.getDeck());
+
                     // Si égalité antérieure, résolution
                     if(tasPlein){
-                        for(int i =0; i<tas.length; i++){
-                            if(tas[i]!=null){
-                                JeuCarte.ajouterCarte(tas, i, j1.getDeck());
-                            }
-                        }
+
+                        JeuCarte.viderTas(tas, j1.getDeck());
                         tasPlein=false;
                     }
-                } else if (j1.getCarte(carte1).getValeur().ordinal() < j2.getCarte(carte2).getValeur().ordinal()) {
-                    System.out.printf("%s bat %s%n",j2.getCarte(carte2), j1.getCarte(carte1));
-                    JeuCarte.ajouterCarte(j1.getDeck(), carte1, j2.getDeck());
+
+                // Carte joueur 1 < Carte joueur 2
+                } else if (j1.getCarte(CARTE).getValeur().ordinal() < j2.getCarte(CARTE).getValeur().ordinal()) {
+                    System.out.printf("%s bat %s%n", j2.getCarte(CARTE), j1.getCarte(CARTE));
+                    JeuCarte.ajouterCarteListe(j1.getDeck(), CARTE, defausse);
+                    JeuCarte.ajouterCarteListe(j2.getDeck(), CARTE, defausse);
+                    JeuCarte.viderTas(defausse, j2.getDeck());
                     // Si égalité antérieure, résolution
-                    if(tasPlein){
-                        for(int i =0; i<tas.length; i++){
-                            if(tas[i]!=null){
-                                JeuCarte.ajouterCarte(tas, i, j2.getDeck());
-                            }
-                        }
-                        tasPlein=false;
+                    if (tasPlein) {
+
+                        JeuCarte.viderTas(tas, j2.getDeck());
+                        tasPlein = false;
                     }
+
+                // Carte joueur 1 = Carte joueur 2
                 } else{
-                    System.out.printf("Egalite entre %s et %s%n", j1.getCarte(carte1), j2.getCarte(carte2));
-                    JeuCarte.ajouterCarte(j1.getDeck(),carte1, tas);
-                    JeuCarte.ajouterCarte(j2.getDeck(),carte2, tas);
+                    System.out.printf("Egalite entre %s et %s%n", j1.getCarte(CARTE), j2.getCarte(CARTE));
+                    JeuCarte.ajouterCarteListe(j1.getDeck(),CARTE, tas);
+                    JeuCarte.ajouterCarteListe(j2.getDeck(),CARTE, tas);
                     tasPlein=true;
                 }
                 nbCoups++;
 
+            // Une des deux listes n'a pas de première carte = vide
             } else{
                 System.out.println("Fin de la bataille");
-                if(jeu1Vide){
+                if(j1.getDeck().isEmpty()){
                     System.out.printf("%s a gagné en %d coups%n", j2, nbCoups);
-                    JeuCarte.afficher(j2.getDeck());
+                    JeuCarte.afficherListe(j2.getDeck());
                 } else {
                     System.out.printf("%s a gagné en %d coups %n", j1, nbCoups);
-                    JeuCarte.afficher(j1.getDeck());
+                    JeuCarte.afficherListe(j1.getDeck());
                 }
                 }
-        } while (!jeu1Vide&&!jeu2Vide);
+            System.out.printf("Deck 1 : %d cartes, Deck 2 : %d cartes%n",j1.getDeck().size(), j2.getDeck().size());
 
 
-    }
+        } while (!j1.getDeck().isEmpty() && !j2.getDeck().isEmpty());
 
-    public static boolean checkDeckVide(Carte[] Deck){
-        boolean check=false;
-        for (Carte value : Deck) {
-            check = false;
-            if (value != null) {
-                break;
-            } else {
-                check = true;
-            }
-        }
-        return check;
     }
 }

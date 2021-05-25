@@ -1,8 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Joueur {
     private String nom;
     private String prenom;
     private Carte carte;
-    private Carte[] deck;
+    private ArrayList<Carte> deck;
 
     /**
      * Constructeur d'un joueur avec initialisation d'un deck de 52 cartes vide (null)
@@ -12,18 +15,17 @@ public class Joueur {
     public Joueur(String nom, String prenom) {
         this.nom = nom;
         this.prenom = prenom;
-        this.deck = new Carte[52];
     }
 
-    public Carte[] getDeck() {
+    public ArrayList<Carte> getDeck() {
         return deck;
     }
 
     public Carte getCarte(int carteDemandee){
-        return this.deck[carteDemandee];
+        return this.deck.get(carteDemandee);
     }
 
-    public void setDeck(Carte[] deck) {
+    public void setDeck(ArrayList<Carte> deck) {
         this.deck = deck;
     }
 
