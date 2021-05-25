@@ -9,6 +9,8 @@ public class Bataille {
 
         boolean tasPlein=false;
 
+        boolean j1GagnantManche=false;
+
         int nbCoups= 0;
 
         // Création d'un paquet de carte de 52 cartes
@@ -39,9 +41,17 @@ public class Bataille {
                 //Carte joueur 1 > Carte joueur 2
                 if (j1.getCarte(CARTE).getValeur().ordinal() > j2.getCarte(CARTE).getValeur().ordinal()) {
                     System.out.printf("%s bat %s%n",j1.getCarte(CARTE), j2.getCarte(CARTE));
-                    JeuCarte.ajouterCarteListe(j1.getDeck(), CARTE, defausse);
-                    JeuCarte.ajouterCarteListe(j2.getDeck(), CARTE, defausse);
+
+                    if(j1GagnantManche){
+                        JeuCarte.ajouterCarteListe(j2.getDeck(), CARTE, defausse);
+                        JeuCarte.ajouterCarteListe(j1.getDeck(), CARTE, defausse);
+                    } else {
+                        JeuCarte.ajouterCarteListe(j1.getDeck(), CARTE, defausse);
+                        JeuCarte.ajouterCarteListe(j2.getDeck(), CARTE, defausse);
+                    }
+
                     JeuCarte.viderTas(defausse, j1.getDeck());
+                    j1GagnantManche=true;
 
                     // Si égalité antérieure, résolution
                     if(tasPlein){
@@ -53,9 +63,18 @@ public class Bataille {
                 // Carte joueur 1 < Carte joueur 2
                 } else if (j1.getCarte(CARTE).getValeur().ordinal() < j2.getCarte(CARTE).getValeur().ordinal()) {
                     System.out.printf("%s bat %s%n", j2.getCarte(CARTE), j1.getCarte(CARTE));
-                    JeuCarte.ajouterCarteListe(j1.getDeck(), CARTE, defausse);
-                    JeuCarte.ajouterCarteListe(j2.getDeck(), CARTE, defausse);
+
+
+                    if(j1GagnantManche){
+                        JeuCarte.ajouterCarteListe(j2.getDeck(), CARTE, defausse);
+                        JeuCarte.ajouterCarteListe(j1.getDeck(), CARTE, defausse);
+                    } else {
+                        JeuCarte.ajouterCarteListe(j1.getDeck(), CARTE, defausse);
+                        JeuCarte.ajouterCarteListe(j2.getDeck(), CARTE, defausse);
+                    }
+
                     JeuCarte.viderTas(defausse, j2.getDeck());
+                    j1GagnantManche=false;
                     // Si égalité antérieure, résolution
                     if (tasPlein) {
 
@@ -73,14 +92,15 @@ public class Bataille {
                 nbCoups++;
 
             // Une des deux listes n'a pas de première carte = vide
-            } else{
+            }
+            if(j1.getDeck().isEmpty()||j2.getDeck().isEmpty()){
                 System.out.println("Fin de la bataille");
                 if(j1.getDeck().isEmpty()){
                     System.out.printf("%s a gagné en %d coups%n", j2, nbCoups);
-                    JeuCarte.afficherListe(j2.getDeck());
+
                 } else {
                     System.out.printf("%s a gagné en %d coups %n", j1, nbCoups);
-                    JeuCarte.afficherListe(j1.getDeck());
+
                 }
                 }
             System.out.printf("Deck 1 : %d cartes, Deck 2 : %d cartes%n",j1.getDeck().size(), j2.getDeck().size());
@@ -89,4 +109,5 @@ public class Bataille {
         } while (!j1.getDeck().isEmpty() && !j2.getDeck().isEmpty());
 
     }
+
 }
